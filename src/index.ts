@@ -1,14 +1,23 @@
 export type PlayerColor = "white" | "black";
 
 // set up a generic chess piece class
-// the move function will be overwritten with the unique move instructions
+// the movementOptions and move functions will be overwritten with the unique move instructions
 // for each type of chess piece
 class ChessPiece {
   position: number;
   alive: boolean;
   color: PlayerColor;
-  move(): number[] {
+  movementOptions(): number[] {
     return [];
+  }
+  move(position: number): boolean {
+    // const availableSpots = this.movementOptions()
+    // if (availableSpots.includes(position)) {
+    //    this.position = position
+    // }
+    // return [];
+    console.log(position);
+    return false;
   }
 
   constructor(position: number, color: PlayerColor) {
