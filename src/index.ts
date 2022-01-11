@@ -4,7 +4,6 @@ export type PlayerColor = "white" | "black";
 // the movementOptions and move functions will be overwritten with the unique move instructions
 // for each type of chess piece
 class ChessPiece {
-  position: number;
   alive: boolean;
   color: PlayerColor;
   movementOptions(): number[] {
@@ -13,61 +12,64 @@ class ChessPiece {
   move(position: number): boolean {
     // const availableSpots = this.movementOptions()
     // if (availableSpots.includes(position)) {
-    //    this.position = position
     // }
     // return [];
     console.log(position);
     return false;
   }
 
-  constructor(position: number, color: PlayerColor) {
-    this.position = position;
+  constructor(color: PlayerColor) {
     this.color = color;
     this.alive = true; // defaults to true
   }
 }
 
 class King extends ChessPiece {
-  constructor(position: number, color: PlayerColor) {
-    super(position, color);
+  constructor(color: PlayerColor) {
+    super(color);
   }
 }
 
 class Queen extends ChessPiece {
-  constructor(position: number, color: PlayerColor) {
-    super(position, color);
+  constructor(color: PlayerColor) {
+    super(color);
   }
 }
 class Bishop extends ChessPiece {
-  constructor(position: number, color: PlayerColor) {
-    super(position, color);
+  constructor(color: PlayerColor) {
+    super(color);
   }
 }
 class Knight extends ChessPiece {
-  constructor(position: number, color: PlayerColor) {
-    super(position, color);
+  constructor(color: PlayerColor) {
+    super(color);
   }
 }
 
 class Rook extends ChessPiece {
-  constructor(position: number, color: PlayerColor) {
-    super(position, color);
+  constructor(color: PlayerColor) {
+    super(color);
   }
 }
 
 class Pawn extends ChessPiece {
-  constructor(position: number, color: PlayerColor) {
-    super(position, color);
+  constructor(color: PlayerColor) {
+    super(color);
   }
 }
 
+// set up general type for pieces
 type ChessPieces = King | Queen | Bishop | Knight | Rook | Pawn;
-/*
-export let boardSpaces: ChessPieces | null[] = [];
 
+// build out starting board with no pieces
+let boardSpaces: (ChessPieces | null)[] = [];
 for (let i = 1; i <= 64; i++) {
   boardSpaces.push(null);
 }
+/*
 
-const setBoard = () => {};
+const setBoard = () => {
+  // set up whites
+  // set up blacks
+};
 */
