@@ -4,7 +4,6 @@ export type PlayerColor = "white" | "black";
 // the movementOptions and move functions will be overwritten with the unique move instructions
 // for each type of chess piece
 export class ChessPiece {
-  alive: boolean;
   color: PlayerColor;
   movementOptions(): number[] {
     return [];
@@ -20,7 +19,6 @@ export class ChessPiece {
 
   constructor(color: PlayerColor) {
     this.color = color;
-    this.alive = true; // defaults to true
   }
 }
 
