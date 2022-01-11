@@ -126,3 +126,50 @@ const topEdge = [0, 1, 2, 3, 4, 5, 6, 7];
 const rightEdge = [7, 15, 23, 31, 39, 47, 55, 63];
 const bottomEdge = [56, 57, 58, 59, 60, 61, 62, 63];
 const leftEdge = [0, 8, 16, 24, 32, 40, 48, 56];
+
+const hasSameRow = (originalPosition: number, newPosition: number) => {
+  if (newPosition < 0 || newPosition > 63) {
+    return false;
+  }
+  const leftBoundary = originalPosition - (originalPosition % 8);
+  const newPositionLeftBoundary = newPosition - (newPosition % 8);
+  return leftBoundary === newPositionLeftBoundary;
+};
+
+const moveKing = (position: number, color: PlayerColor) => {
+  // define all possible current movement paths
+  const topMove = position - 8;
+  const rightMove = position + 1;
+  const bottomMove = position + 8;
+  const leftMove = position - 1;
+
+  let moves = [];
+  if (topMove > 0) {
+    moves.push(topMove);
+  }
+  if (bottomMove <= 63) {
+    moves.push(bottomMove);
+  }
+
+  if (hasSameRow(position, rightMove)) {
+    moves.push(rightMove);
+  }
+
+  if (hasSameRow(position, leftMove)) {
+    moves.push(leftMove);
+  }
+
+  return moves.filter(
+    (movePosition) =>
+      boardSpaces[movePosition] === null ||
+      boardSpaces[movePosition]?.color !== color
+  );
+};
+
+console.log(moveKing(7, "white"));
+console.log(moveKing(7, "black"));
+console.log(moveKing(0, "white"));
+console.log(moveKing(1, "white"));
+console.log(moveKing(9, "white"));
+console.log(moveKing(62, "black"));
+console.log(moveKing(56, "black"));
