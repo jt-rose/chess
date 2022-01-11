@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
+    "dev": "node build/index.js",
     "tsc": "tsc",
     "prepublishOnly": "tsc -d"
   },
