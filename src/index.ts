@@ -1,15 +1,10 @@
 export type PlayerColor = "white" | "black";
 
-export const boardPlaces = [
-  [1, 2, 3, 4, 5, 6, 7, 8], // a
-  [1, 2, 3, 4, 5, 6, 7, 8], // b
-  [1, 2, 3, 4, 5, 6, 7, 8], // c
-  [1, 2, 3, 4, 5, 6, 7, 8], // d
-  [1, 2, 3, 4, 5, 6, 7, 8], // e
-  [1, 2, 3, 4, 5, 6, 7, 8], // f
-  [1, 2, 3, 4, 5, 6, 7, 8], // g
-  [1, 2, 3, 4, 5, 6, 7, 8], // h
-];
+export let boardSpaces: number[] = [];
+
+for (let i = 1; i <= 64; i++) {
+  boardSpaces.push(i);
+}
 
 class ChessPiece {
   position: number;
@@ -20,5 +15,18 @@ class ChessPiece {
     this.position = position;
     this.color = color;
     this.alive = true; // defaults to true
+  }
+}
+
+// king
+// queen
+// bishop
+// knight
+// rook
+// pawn
+
+class KingPiece extends ChessPiece {
+  constructor(position: number, color: PlayerColor) {
+    super(position, color);
   }
 }
