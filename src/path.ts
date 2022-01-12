@@ -23,21 +23,10 @@ const rightEdge = [7, 15, 23, 31, 39, 47, 55, 63];
 //const bottomEdge = [56, 57, 58, 59, 60, 61, 62, 63];
 const leftEdge = [0, 8, 16, 24, 32, 40, 48, 56];
 
-/*
-const getTopBoundary = (position: number) => {
-
-}
-*/
-
 const getRightBoundary = (position: number) => {
   return position - (position % 8) + 7;
 };
 
-/*
-const getBottomBoundary = (position: number) => {
-
-}
-*/
 const getLeftBoundary = (position: number) => {
   return position - (position % 8);
 };
@@ -56,6 +45,16 @@ const getRow = (position: number) => {
   }
 
   return [rowStart, ...intermediatePositions, rowEnd];
+};
+
+const getLeftAndRightSidesOfRow = (position: number) => {
+  const row = getRow(position);
+  const leftRow = row.filter((rowIndex) => rowIndex < position);
+  const rightRow = row.filter((rowIndex) => rowIndex > position);
+  return {
+    leftRow,
+    rightRow,
+  };
 };
 
 const getColumn = (position: number) => {
@@ -329,6 +328,33 @@ const getKnightMovementOptions = (position: number) => {
 
   return [...topMoves, ...rightMoves, ...bottomMoves, ...leftMoves];
 };
+
+/* -------------------------------------------------------------------------- */
+/*                 find movement options for each chess piece                 */
+/* -------------------------------------------------------------------------- */
+
+// These functions will find the movement options for each piece,
+// factoring in the curent board and the movement ability of each piece
+interface ChessPieceSettings {
+  position: number;
+  color: PlayerColor;
+  board: Board;
+}
+
+// const findKingMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
+
+// }
+// const findQueenMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
+//     const { position, color, board } =     chessPieceSettings
+//     const rowOptions = getRow(position)
+//     const columnOptions = getColumn(position)
+//     const diagonalOptions = getDiagonals(position)
+
+// }
+// const findBishopMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+// const findKnightMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+// const findRookMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+// const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
 
 /* -------------------------------------------------------------------------- */
 /*                     find new positions to right of unit                    */
