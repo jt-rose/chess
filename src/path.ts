@@ -1,11 +1,21 @@
 import { PlayerColor } from "./pieces";
 import { Board } from "./index";
 
-/*
-const getRow = (position: number) => {};
+const getRow = (position: number) => {
+  const rowStart = position - (position % 8);
+  const rowEnd = rowStart + 7;
+  let intermediatePositions: number[] = [];
+
+  for (let i = rowStart + 1; i < rowEnd; i++) {
+    intermediatePositions.push(i);
+  }
+
+  return [rowStart, ...intermediatePositions, rowEnd];
+};
+
 const getColumn = (position: number) => {};
 const getDiagonal = (position: number) => {};
-*/
+
 export const findRightMoves = (
   config: {
     board: Board;
