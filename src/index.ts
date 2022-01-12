@@ -7,6 +7,7 @@ import {
   Queen,
   King,
   Pawn,
+  ChessPiece,
 } from "./pieces";
 
 // build out starting board of 64 spots with no pieces set
@@ -114,10 +115,49 @@ const moveKing = (position: number, color: PlayerColor) => {
   );
 };
 
-console.log(moveKing(7, "white"));
-console.log(moveKing(7, "black"));
-console.log(moveKing(0, "white"));
-console.log(moveKing(1, "white"));
-console.log(moveKing(9, "white"));
-console.log(moveKing(62, "black"));
-console.log(moveKing(56, "black"));
+const addViableRightMovementPositions = (config: {
+  viableMoves: number[];
+  currentPosition: number;
+  color: PlayerColor;
+  rightMoveLimit: number;
+}): number[] => {
+  const { viableMoves, currentPosition, color, rightMoveLimit } = config;
+  const newPosition = currentPosition + 1;
+  if (newPosition > rightMoveLimit) {
+    return viableMoves;
+  }
+
+  const boardPosition = boardSpaces[newPosition];
+  if (boardPosition?.color === color) {
+    return viableMoves;
+  }
+
+  return addViableRightMovementPositions({
+    viableMoves: [...viableMoves, newPosition],
+    currentPosition: newPosition,
+    color,
+    rightMoveLimit,
+  });
+};
+
+const moveQueen = (position: number, color: PlayerColor) => {
+  // define directional limits of movement range
+  const topMoveLimit = 0 + (position % 8);
+  const rightMoveLimit = (position % 8) + 7;
+  const bottomMoveLimit = 54 + (position % 8);
+  const leftMoveLimit = position - (position % 8);
+
+  // declare variables to store possible moves
+  let topMoves: number[] = [];
+  const rightMoves = addViableRightMovementPositions({
+    viableMoves: [],
+    currentPosition: position,
+    color,
+    rightMoveLimit,
+  });
+  let bottommMoves: number[] = [];
+  let leftMoves: number[] = [];
+
+  // starting from current position, check each directional step
+  // toward the movement limits and store all possible moves in that direction
+};
