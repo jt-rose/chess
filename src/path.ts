@@ -13,7 +13,15 @@ const getRow = (position: number) => {
   return [rowStart, ...intermediatePositions, rowEnd];
 };
 
-const getColumn = (position: number) => {};
+const getColumn = (position: number) => {
+  let intermediatePositions: number[] = [];
+
+  for (let i = 0; i < 8; i++) {
+    intermediatePositions.push(i * 8 + (position % 8));
+  }
+  return intermediatePositions;
+};
+
 const getDiagonal = (position: number) => {};
 
 export const findRightMoves = (
