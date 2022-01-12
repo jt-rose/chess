@@ -159,13 +159,19 @@ const getBottomRightDiagonals = (
 };
 
 const getDiagonals = (position: number) => {
-  const forwardStep = position + 1;
-  const backstep = position - 1;
+  // get diagonal movement options
+  const topLeftDiagonals = getTopLeftDiagonals(position);
+  const topRightDiagonals = getTopRightDiagonals(position);
+  const bottomLeftDiagonals = getBottomLeftDiagonals(position);
+  const bottomRightDiagonals = getBottomRightDiagonals(position);
 
-  const topLeftDiagonal = backstep - 8;
-  const topRightDiagonal = forwardStep - 8;
-  const bottomLeftDiagonal = backstep + 8;
-  const bottomRightDiagonal = forwardStep + 8;
+  // return all diagonal movement options
+  return [
+    ...topLeftDiagonals,
+    ...topRightDiagonals,
+    ...bottomLeftDiagonals,
+    ...bottomRightDiagonals,
+  ];
 };
 
 /* -------------------------------------------------------------------------- */

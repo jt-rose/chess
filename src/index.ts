@@ -55,8 +55,8 @@ const setBoard = () => {
 };
 
 setBoard();
-console.log(board);
-console.log(board.length);
+// console.log(board);
+// console.log(board.length);
 
 const hasSameRow = (originalPosition: number, newPosition: number) => {
   if (newPosition < 0 || newPosition > 63) {
