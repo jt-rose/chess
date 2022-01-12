@@ -319,31 +319,16 @@ const getKnightLeftMovementOptions = (position: number) => {
   return movementOptions;
 };
 
-/*
+// get all possible knight movement options
 const getKnightMovementOptions = (position: number) => {
-  // get top movement options
-  const topSteps = position - 16;
-  const topRight = topSteps + 1;
-  const topLeft = topSteps - 1;
+  // get movement options
+  const topMoves = getKnightTopMovementOptions(position);
+  const rightMoves = getKnightRightMovementOptions(position);
+  const bottomMoves = getKnightBottomMovementOptions(position);
+  const leftMoves = getKnightLeftMovementOptions(position);
 
-  // check boundary
-  //const topBoundary =
-
-  // get bottom movement options
-  const bottomSteps = position + 16;
-  const bottomRight = bottomSteps + 1;
-  const bottomLeft = bottomSteps - 1;
-
-  // get right movement options
-  const rightSteps = position + 2;
-  const rightTop = rightSteps - 8;
-  const rightBottom = rightSteps + 8;
-
-  // get left movement options
-  const leftSteps = position - 2;
-  const leftTop = leftSteps - 8;
-  const leftBottom = leftSteps + 8;
-};*/
+  return [...topMoves, ...rightMoves, ...bottomMoves, ...leftMoves];
+};
 
 /* -------------------------------------------------------------------------- */
 /*                     find new positions to right of unit                    */
