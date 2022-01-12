@@ -57,11 +57,21 @@ const getTopLeftDiagonals = (
   diagonalSteps: number[] = []
 ): number[] => {
   const nextStep = position - 9;
+
+  // if next step is out of bounds, return current diagonalSteps
+  if (nextStep < 0) {
+    return diagonalSteps;
+  }
+
   // check boundary
+  const startingPositionLeftEdge = position - (position % 8);
   const startingLeftEdgeIndex = leftEdge.findIndex(
-    (i) => position + (position % 8)
+    (i) => i === startingPositionLeftEdge
   );
+
   const nextStepLeftEdge = leftEdge[startingLeftEdgeIndex - 1];
+
+  // if the next step is out of bounds, return the previously found steps
   if (nextStepLeftEdge === nextStep - (nextStep % 8)) {
     return getTopLeftDiagonals(nextStep, [...diagonalSteps, nextStep]);
   }
