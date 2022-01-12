@@ -230,7 +230,7 @@ const getKnightTopMovementOptions = (position: number): number[] => {
 };
 
 const getKnightBottomMovementOptions = (position: number) => {
-  // get position two places above knight
+  // get position two places below knight
   const twoStepsDown = position + 16;
 
   // if out of bounds, return no positions
@@ -255,6 +255,35 @@ const getKnightBottomMovementOptions = (position: number) => {
 
   if (bottomLeft >= leftBoundary) {
     movementOptions.push(bottomLeft);
+  }
+
+  // return movement options
+  return movementOptions;
+};
+
+const getKnightRightMovementOptions = (position: number) => {
+  // get position two places to the right of knight
+  const twoStepsRight = position + 2;
+
+  // if out of bounds, return no positions
+  const startingPositionRightBoundary = getRightBoundary(position);
+  if (twoStepsRight > startingPositionRightBoundary) {
+    return [];
+  }
+
+  // get possible steps above and below
+  const aboveRight = twoStepsRight - 8;
+  const belowRight = twoStepsRight + 8;
+
+  // store viable movement options
+  let movementOptions: number[] = [];
+
+  if (aboveRight > 0) {
+    movementOptions.push(aboveRight);
+  }
+
+  if (belowRight < 64) {
+    movementOptions.push(belowRight);
   }
 
   // return movement options
