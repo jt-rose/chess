@@ -66,6 +66,17 @@ const getColumn = (position: number) => {
   return intermediatePositions;
 };
 
+const getBottomAndTopOfColumn = (position: number) => {
+  const column = getColumn(position);
+  const topColumn = column.filter((columnIndex) => columnIndex < position);
+  const bottomColumn = column.filter((columnIndex) => columnIndex > position);
+
+  return {
+    topColumn,
+    bottomColumn,
+  };
+};
+
 /* -------------------------------------------------------------------------- */
 /*                             calculate diagonals                            */
 /* -------------------------------------------------------------------------- */
