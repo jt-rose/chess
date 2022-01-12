@@ -196,53 +196,62 @@ const getDiagonals = (position: number) => {
 /* -------------------------------------------------------------------------- */
 /*                    get L-shaped knight movement options                    */
 /* -------------------------------------------------------------------------- */
-/*
+
 const getKnightTopMovementOptions = (position: number): number[] => {
-    // get position two places above knight
-    const twoStepsUp = position - 16
+  // get position two places above knight
+  const twoStepsUp = position - 16;
 
-    // if out of bounds, return no positions
-    if (twoStepsUp < 0) {
-        return []
-    }
+  // if out of bounds, return no positions
+  if (twoStepsUp < 0) {
+    return [];
+  }
 
-    // get left and right boundaries
-    const leftBoundary = twoStepsUp - (twoStepsUp % 8)
-    const rightBoundary = twoStepsUp
-    const topRight = twoStepsUp + 1
-    const topLeft = twoStepsUp - 1
+  // get left and right boundaries
+  const leftBoundary = getLeftBoundary(twoStepsUp);
+  const rightBoundary = getRightBoundary(twoStepsUp);
 
+  // get possible steps left and right
+  const topRight = twoStepsUp + 1;
+  const topLeft = twoStepsUp - 1;
 
-}
+  let movementOptions: number[] = [];
 
+  if (topRight <= rightBoundary) {
+    movementOptions.push(topRight);
+  }
+
+  if (topLeft >= leftBoundary) {
+    movementOptions.push(topLeft);
+  }
+
+  return movementOptions;
+};
+/*
 const getKnightMovementOptions = (position: number) => {
-    // get top movement options
-    const topSteps = position - 16
-    const topRight = topSteps + 1
-    const topLeft = topSteps - 1
+  // get top movement options
+  const topSteps = position - 16;
+  const topRight = topSteps + 1;
+  const topLeft = topSteps - 1;
 
-    // check boundary
-    const topBoundary = 
+  // check boundary
+  //const topBoundary =
 
-    // get bottom movement options
-    const bottomSteps = position + 16
-    const bottomRight = bottomSteps + 1
-    const bottomLeft = bottomSteps - 1
+  // get bottom movement options
+  const bottomSteps = position + 16;
+  const bottomRight = bottomSteps + 1;
+  const bottomLeft = bottomSteps - 1;
 
-    // get right movement options
-    const rightSteps = position + 2
-    const rightTop = rightSteps - 8
-    const rightBottom = rightSteps + 8
+  // get right movement options
+  const rightSteps = position + 2;
+  const rightTop = rightSteps - 8;
+  const rightBottom = rightSteps + 8;
 
-    // get left movement options
-    const leftSteps = position - 2
-    const leftTop = leftSteps - 8
-    const leftBottom = leftSteps + 8
+  // get left movement options
+  const leftSteps = position - 2;
+  const leftTop = leftSteps - 8;
+  const leftBottom = leftSteps + 8;
+};*/
 
-
-
-}
-*/
 /* -------------------------------------------------------------------------- */
 /*                     find new positions to right of unit                    */
 /* -------------------------------------------------------------------------- */
