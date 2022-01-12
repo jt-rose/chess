@@ -7,55 +7,56 @@ import {
   Queen,
   King,
   Pawn,
-  ChessPiece,
 } from "./pieces";
+import { findRightMoves } from "./path";
 
 // build out starting board of 64 spots with no pieces set
-let boardSpaces: (ChessPieces | null)[] = [];
+export type Board = (ChessPieces | null)[];
+let board: Board = [];
 for (let i = 0; i < 64; i++) {
-  boardSpaces.push(null);
+  board.push(null);
 }
 
 // fill the empty board with pieces in their starting positions
 const setBoard = () => {
   // set up blacks
-  boardSpaces[0] = new Rook("black");
-  boardSpaces[1] = new Knight("black");
-  boardSpaces[2] = new Bishop("black");
-  boardSpaces[3] = new Queen("black");
-  boardSpaces[4] = new King("black");
-  boardSpaces[5] = new Bishop("black");
-  boardSpaces[6] = new Knight("black");
-  boardSpaces[7] = new Rook("black");
+  board[0] = new Rook("black");
+  board[1] = new Knight("black");
+  board[2] = new Bishop("black");
+  board[3] = new Queen("black");
+  board[4] = new King("black");
+  board[5] = new Bishop("black");
+  board[6] = new Knight("black");
+  board[7] = new Rook("black");
 
   // set up black pawns
   for (let i = 8; i < 16; i++) {
-    boardSpaces[i] = new Pawn("black");
+    board[i] = new Pawn("black");
   }
 
   // set up empty spaces - useful for resetting the board for a new game
   for (let i = 16; i < 48; i++) {
-    boardSpaces[i] = null;
+    board[i] = null;
   }
   // set up white pawns
   for (let i = 48; i < 56; i++) {
-    boardSpaces[i] = new Pawn("white");
+    board[i] = new Pawn("white");
   }
 
   // set up whites
-  boardSpaces[56] = new Rook("white");
-  boardSpaces[57] = new Knight("white");
-  boardSpaces[58] = new Bishop("white");
-  boardSpaces[59] = new Queen("white");
-  boardSpaces[60] = new King("white");
-  boardSpaces[61] = new Bishop("white");
-  boardSpaces[62] = new Knight("white");
-  boardSpaces[63] = new Rook("white");
+  board[56] = new Rook("white");
+  board[57] = new Knight("white");
+  board[58] = new Bishop("white");
+  board[59] = new Queen("white");
+  board[60] = new King("white");
+  board[61] = new Bishop("white");
+  board[62] = new Knight("white");
+  board[63] = new Rook("white");
 };
 
 setBoard();
-console.log(boardSpaces);
-console.log(boardSpaces.length);
+console.log(board);
+console.log(board.length);
 
 /*
 // Board Indexes:
@@ -110,34 +111,8 @@ const moveKing = (position: number, color: PlayerColor) => {
 
   return moves.filter(
     (movePosition) =>
-      boardSpaces[movePosition] === null ||
-      boardSpaces[movePosition]?.color !== color
+      board[movePosition] === null || board[movePosition]?.color !== color
   );
-};
-
-const addViableRightMovementPositions = (config: {
-  viableMoves: number[];
-  currentPosition: number;
-  color: PlayerColor;
-  rightMoveLimit: number;
-}): number[] => {
-  const { viableMoves, currentPosition, color, rightMoveLimit } = config;
-  const newPosition = currentPosition + 1;
-  if (newPosition > rightMoveLimit) {
-    return viableMoves;
-  }
-
-  const boardPosition = boardSpaces[newPosition];
-  if (boardPosition?.color === color) {
-    return viableMoves;
-  }
-
-  return addViableRightMovementPositions({
-    viableMoves: [...viableMoves, newPosition],
-    currentPosition: newPosition,
-    color,
-    rightMoveLimit,
-  });
 };
 
 const moveQueen = (position: number, color: PlayerColor) => {
@@ -149,8 +124,8 @@ const moveQueen = (position: number, color: PlayerColor) => {
 
   // declare variables to store possible moves
   let topMoves: number[] = [];
-  const rightMoves = addViableRightMovementPositions({
-    viableMoves: [],
+  const rightMoves = findRightMoves({
+    board,
     currentPosition: position,
     color,
     rightMoveLimit,
