@@ -1,6 +1,32 @@
 import { PlayerColor } from "./pieces";
 import { Board } from "./index";
 
+/* -------------------------------------------------------------------------- */
+/*                             map out board edges                            */
+/* -------------------------------------------------------------------------- */
+/*
+*Board Indexes:
+[
+    0,1,2,3,4,5,6,7,
+    8,9,10,11,12,13,14,15,
+    16,17,18,19,20,21,22,23,
+    24,25,26,27,28,29,30,31,
+    32,33,34,35,36,37,38,39,
+    40,41,42,43,44,45,46,47,
+    48,49,50,51,52,53,54,55,
+    56,57,58,59,60,61,62,63
+]
+*/
+
+const topEdge = [0, 1, 2, 3, 4, 5, 6, 7];
+const rightEdge = [7, 15, 23, 31, 39, 47, 55, 63];
+const bottomEdge = [56, 57, 58, 59, 60, 61, 62, 63];
+const leftEdge = [0, 8, 16, 24, 32, 40, 48, 56];
+
+/* -------------------------------------------------------------------------- */
+/*                            get rows and columns                            */
+/* -------------------------------------------------------------------------- */
+
 const getRow = (position: number) => {
   const rowStart = position - (position % 8);
   const rowEnd = rowStart + 7;
@@ -22,7 +48,40 @@ const getColumn = (position: number) => {
   return intermediatePositions;
 };
 
-const getDiagonal = (position: number) => {};
+/* -------------------------------------------------------------------------- */
+/*                             calculate diagonals                            */
+/* -------------------------------------------------------------------------- */
+
+const getTopLeftDiagonals = (
+  position: number,
+  diagonalSteps: number[] = []
+): number[] => {
+  const nextStep = position - 9;
+  // check boundary
+  const startingLeftEdgeIndex = leftEdge.findIndex(
+    (i) => position + (position % 8)
+  );
+  const nextStepLeftEdge = leftEdge[startingLeftEdgeIndex - 1];
+  if (nextStepLeftEdge === nextStep - (nextStep % 8)) {
+    return getTopLeftDiagonals(nextStep, [...diagonalSteps, nextStep]);
+  }
+
+  return diagonalSteps;
+};
+
+const getDiagonals = (position: number) => {
+  const forwardStep = position + 1;
+  const backstep = position - 1;
+
+  const topLeftDiagonal = backstep - 8;
+  const topRightDiagonal = forwardStep - 8;
+  const bottomLeftDiagonal = backstep + 8;
+  const bottomRightDiagonal = forwardStep + 8;
+};
+
+/* -------------------------------------------------------------------------- */
+/*                     find new positions to right of unit                    */
+/* -------------------------------------------------------------------------- */
 
 export const findRightMoves = (
   config: {
