@@ -18,17 +18,36 @@ import { Board } from "./index";
 ]
 */
 
-const topEdge = [0, 1, 2, 3, 4, 5, 6, 7];
+//const topEdge = [0, 1, 2, 3, 4, 5, 6, 7];
 const rightEdge = [7, 15, 23, 31, 39, 47, 55, 63];
-const bottomEdge = [56, 57, 58, 59, 60, 61, 62, 63];
+//const bottomEdge = [56, 57, 58, 59, 60, 61, 62, 63];
 const leftEdge = [0, 8, 16, 24, 32, 40, 48, 56];
+
+/*
+const getTopBoundary = (position: number) => {
+
+}
+*/
+
+const getRightBoundary = (position: number) => {
+  return position - (position % 8) + 7;
+};
+
+/*
+const getBottomBoundary = (position: number) => {
+
+}
+*/
+const getLeftBoundary = (position: number) => {
+  return position - (position % 8);
+};
 
 /* -------------------------------------------------------------------------- */
 /*                            get rows and columns                            */
 /* -------------------------------------------------------------------------- */
 
 const getRow = (position: number) => {
-  const rowStart = position - (position % 8);
+  const rowStart = getLeftBoundary(position);
   const rowEnd = rowStart + 7;
   let intermediatePositions: number[] = [];
 
@@ -64,7 +83,7 @@ const getTopLeftDiagonals = (
   }
 
   // check boundary
-  const startingPositionLeftEdge = position - (position % 8);
+  const startingPositionLeftEdge = getLeftBoundary(position);
   const startingLeftEdgeIndex = leftEdge.findIndex(
     (i) => i === startingPositionLeftEdge
   );
@@ -72,7 +91,7 @@ const getTopLeftDiagonals = (
   const nextStepLeftEdge = leftEdge[startingLeftEdgeIndex - 1];
 
   // if the next step is out of bounds, return the previously found steps
-  if (nextStepLeftEdge === nextStep - (nextStep % 8)) {
+  if (nextStepLeftEdge === getLeftBoundary(nextStep)) {
     return getTopLeftDiagonals(nextStep, [...diagonalSteps, nextStep]);
   }
 
@@ -91,7 +110,7 @@ const getBottomLeftDiagonals = (
   }
 
   // check boundary
-  const startingPositionLeftEdge = position - (position % 8);
+  const startingPositionLeftEdge = getLeftBoundary(position);
   const startingLeftEdgeIndex = leftEdge.findIndex(
     (i) => i === startingPositionLeftEdge
   );
@@ -99,7 +118,7 @@ const getBottomLeftDiagonals = (
   const nextStepLeftEdge = leftEdge[startingLeftEdgeIndex + 1];
 
   // if the next step is out of bounds, return the previously found steps
-  if (nextStepLeftEdge === nextStep - (nextStep % 8)) {
+  if (nextStepLeftEdge === getLeftBoundary(nextStep)) {
     return getBottomLeftDiagonals(nextStep, [...diagonalSteps, nextStep]);
   }
 
@@ -118,14 +137,14 @@ const getTopRightDiagonals = (
   }
 
   // check boundary
-  const startingPositionRightEdge = position - (position % 8) + 7;
+  const startingPositionRightEdge = getRightBoundary(position);
   const startingRightEdgeIndex = rightEdge.findIndex(
     (i) => i === startingPositionRightEdge
   );
   const nextStepRightEdge = rightEdge[startingRightEdgeIndex - 1];
 
   // if the next step is out of bounds, return the previously found steps
-  if (nextStepRightEdge === nextStep - (nextStep % 8) + 7) {
+  if (nextStepRightEdge === getRightBoundary(nextStep)) {
     return getTopRightDiagonals(nextStep, [...diagonalSteps, nextStep]);
   }
 
@@ -144,14 +163,14 @@ const getBottomRightDiagonals = (
   }
 
   // check boundary
-  const startingPositionRightEdge = position - (position % 8) + 7;
+  const startingPositionRightEdge = getRightBoundary(position);
   const startingRightEdgeIndex = rightEdge.findIndex(
     (i) => i === startingPositionRightEdge
   );
   const nextStepRightEdge = rightEdge[startingRightEdgeIndex + 1];
 
   // if the next step is out of bounds, return the previously found steps
-  if (nextStepRightEdge === nextStep - (nextStep % 8) + 7) {
+  if (nextStepRightEdge === getRightBoundary(nextStep)) {
     return getBottomRightDiagonals(nextStep, [...diagonalSteps, nextStep]);
   }
 
@@ -174,6 +193,56 @@ const getDiagonals = (position: number) => {
   ];
 };
 
+/* -------------------------------------------------------------------------- */
+/*                    get L-shaped knight movement options                    */
+/* -------------------------------------------------------------------------- */
+/*
+const getKnightTopMovementOptions = (position: number): number[] => {
+    // get position two places above knight
+    const twoStepsUp = position - 16
+
+    // if out of bounds, return no positions
+    if (twoStepsUp < 0) {
+        return []
+    }
+
+    // get left and right boundaries
+    const leftBoundary = twoStepsUp - (twoStepsUp % 8)
+    const rightBoundary = twoStepsUp
+    const topRight = twoStepsUp + 1
+    const topLeft = twoStepsUp - 1
+
+
+}
+
+const getKnightMovementOptions = (position: number) => {
+    // get top movement options
+    const topSteps = position - 16
+    const topRight = topSteps + 1
+    const topLeft = topSteps - 1
+
+    // check boundary
+    const topBoundary = 
+
+    // get bottom movement options
+    const bottomSteps = position + 16
+    const bottomRight = bottomSteps + 1
+    const bottomLeft = bottomSteps - 1
+
+    // get right movement options
+    const rightSteps = position + 2
+    const rightTop = rightSteps - 8
+    const rightBottom = rightSteps + 8
+
+    // get left movement options
+    const leftSteps = position - 2
+    const leftTop = leftSteps - 8
+    const leftBottom = leftSteps + 8
+
+
+
+}
+*/
 /* -------------------------------------------------------------------------- */
 /*                     find new positions to right of unit                    */
 /* -------------------------------------------------------------------------- */
