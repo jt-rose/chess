@@ -79,6 +79,33 @@ const getTopLeftDiagonals = (
   return diagonalSteps;
 };
 
+const getBottomLeftDiagonals = (
+  position: number,
+  diagonalSteps: number[] = []
+): number[] => {
+  const nextStep = position + 7;
+
+  // if next step is out of bounds, return current diagonalSteps
+  if (nextStep > 63) {
+    return diagonalSteps;
+  }
+
+  // check boundary
+  const startingPositionLeftEdge = position - (position % 8);
+  const startingLeftEdgeIndex = leftEdge.findIndex(
+    (i) => i === startingPositionLeftEdge
+  );
+
+  const nextStepLeftEdge = leftEdge[startingLeftEdgeIndex + 1];
+
+  // if the next step is out of bounds, return the previously found steps
+  if (nextStepLeftEdge === nextStep - (nextStep % 8)) {
+    return getBottomLeftDiagonals(nextStep, [...diagonalSteps, nextStep]);
+  }
+
+  return diagonalSteps;
+};
+
 const getDiagonals = (position: number) => {
   const forwardStep = position + 1;
   const backstep = position - 1;
