@@ -403,13 +403,7 @@ interface ChessPieceSettings {
 // const findKingMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
 
 // }
-// const findQueenMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
-//     const { position, color, board } =     chessPieceSettings
-//     const rowOptions = getRow(position)
-//     const columnOptions = getColumn(position)
-//     const diagonalOptions = getDiagonals(position)
 
-// }
 // const findBishopMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
 // const findKnightMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
 const findRookMovementOptions = (
@@ -431,6 +425,18 @@ const findRookMovementOptions = (
 };
 
 // const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+
+// const findQueenMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
+//     // the queen's movement options are a combination of the rook and the bishop
+//     // so to simplify things we can just call those functions
+//         const axisMovementOptions = findRookMovementOptions(chessPieceSettings)
+//         const diagonalMovementOptions = findBishopMovementOptions(chessPieceSettings)
+
+//         return [
+//             ...axisMovementOptions,
+//             ...diagonalMovementOptions
+//         ]
+//     }
 
 /* -------------------------------------------------------------------------- */
 /*                     find new positions to right of unit                    */
