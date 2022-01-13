@@ -12,13 +12,13 @@ import { findRightMoves } from "./path";
 
 // build out starting board of 64 spots with no pieces set
 export type Board = (ChessPieces | null)[];
-let board: Board = [];
-for (let i = 0; i < 64; i++) {
-  board.push(null);
-}
 
 // fill the empty board with pieces in their starting positions
-const setBoard = () => {
+export const setBoard = (): Board => {
+  let board: Board = [];
+  for (let i = 0; i < 64; i++) {
+    board.push(null);
+  }
   // set up blacks
   board[0] = new Rook("black");
   board[1] = new Knight("black");
@@ -52,10 +52,12 @@ const setBoard = () => {
   board[61] = new Bishop("white");
   board[62] = new Knight("white");
   board[63] = new Rook("white");
+
+  return board;
 };
 
-setBoard();
-// console.log(board);
+const board = setBoard();
+console.log(board);
 // console.log(board.length);
 
 const hasSameRow = (originalPosition: number, newPosition: number) => {

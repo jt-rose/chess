@@ -1,5 +1,7 @@
 import { PlayerColor } from "./pieces";
-import { Board } from "./index";
+import { Board, setBoard } from "./index";
+
+const board = setBoard();
 
 /* -------------------------------------------------------------------------- */
 /*                             map out board edges                            */
@@ -344,6 +346,10 @@ const getKnightMovementOptions = (position: number) => {
 /*                 find movement options for each chess piece                 */
 /* -------------------------------------------------------------------------- */
 
+const findOtherPieces = (positions: number[], board: Board) => {
+  return positions.filter((p) => board[p]);
+};
+
 // These functions will find the movement options for each piece,
 // factoring in the curent board and the movement ability of each piece
 interface ChessPieceSettings {
@@ -364,7 +370,69 @@ interface ChessPieceSettings {
 // }
 // const findBishopMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
 // const findKnightMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
-// const findRookMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+const findRookMovementOptions = (
+  chessPieceSettings: ChessPieceSettings
+): number[] => {
+  const { position, color, board } = chessPieceSettings;
+  // get row and column movement options
+  let { leftRow, rightRow } = getLeftAndRightSidesOfRow(position);
+  let { bottomColumn, topColumn } = getBottomAndTopOfColumn(position);
+
+  // find other pieces along each axis
+  const leftPieces = findOtherPieces(leftRow, board);
+  const rightPieces = findOtherPieces(rightRow, board);
+  const bottomPieces = findOtherPieces(bottomColumn, board);
+  const topPieces = findOtherPieces(topColumn, board);
+
+  // find nearest piece in each direction
+  const nearestLeftPiece = leftPieces.length ? Math.max(...leftPieces) : null;
+  const nearestRightPiece = rightPieces.length
+    ? Math.min(...rightPieces)
+    : null;
+  const nearestBottomPiece = bottomPieces.length
+    ? Math.min(...bottomPieces)
+    : null;
+  const nearestTopPiece = topPieces.length ? Math.max(...topPieces) : null;
+
+  // remove positions adjacent to nearest piece found
+  // and remove nearest piece if its the same color
+
+  // if no nearest piece found, accept all positions found
+  // if position is on adjacent side of nearest piece remove
+  // keep position of nearest piece if it belongs to the opposing player
+  leftRow = leftRow.filter(
+    (p) =>
+      !nearestLeftPiece ||
+      p > nearestLeftPiece ||
+      (p === nearestLeftPiece && board[p]?.color !== color)
+  );
+
+  rightRow = rightRow.filter(
+    //(p) => p <= nearestRightPiece && board[p]?.color !== color
+    (p) =>
+      !nearestRightPiece ||
+      p < nearestRightPiece ||
+      (p === nearestRightPiece && board[p]?.color !== color)
+  );
+  bottomColumn = bottomColumn.filter(
+    //(p) => p <= nearestBottomPiece && board[p]?.color !== color
+    (p) =>
+      !nearestBottomPiece ||
+      p < nearestBottomPiece ||
+      (p === nearestBottomPiece && board[p]?.color !== color)
+  );
+  topColumn = topColumn.filter(
+    //(p) => p >= nearestTopPiece && board[p]?.color !== color
+    (p) =>
+      !nearestTopPiece ||
+      p > nearestTopPiece ||
+      (p === nearestTopPiece && board[p]?.color !== color)
+  );
+
+  // return all viable movement options
+  return [...leftRow, ...rightRow, ...bottomColumn, ...topColumn];
+};
+
 // const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
 
 /* -------------------------------------------------------------------------- */
