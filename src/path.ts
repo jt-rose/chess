@@ -197,12 +197,12 @@ const getDiagonals = (position: number) => {
   const bottomRightDiagonals = getBottomRightDiagonals(position);
 
   // return all diagonal movement options
-  return [
-    ...topLeftDiagonals,
-    ...topRightDiagonals,
-    ...bottomLeftDiagonals,
-    ...bottomRightDiagonals,
-  ];
+  return {
+    topLeftDiagonals,
+    topRightDiagonals,
+    bottomLeftDiagonals,
+    bottomRightDiagonals,
+  };
 };
 
 /* -------------------------------------------------------------------------- */
@@ -406,7 +406,20 @@ interface ChessPieceSettings {
 
 // };
 
-// const findBishopMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+// const findBishopMovementOptions = (
+//   chessPieceSettings: ChessPieceSettings
+// ): number[] => {
+//   const { position, color, board } = chessPieceSettings;
+
+//   // get movement options
+//   const {
+//     topLeftDiagonals,
+//     topRightDiagonals,
+//     bottomLeftDiagonals,
+//     bottomRightDiagonals,
+//   } = getDiagonals(position);
+// };
+
 const findKnightMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): number[] => {
