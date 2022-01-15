@@ -400,12 +400,29 @@ interface ChessPieceSettings {
   board: Board;
 }
 
-// const findKingMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
+// const findKingMovementOptions = (
+//   chessPieceSettings: ChessPieceSettings
+// ): number[] => {
 
-// }
+// };
 
 // const findBishopMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
-// const findKnightMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+const findKnightMovementOptions = (
+  chessPieceSettings: ChessPieceSettings
+): number[] => {
+  const { position, color, board } = chessPieceSettings;
+
+  // get movement options
+  const movementOptions = getKnightMovementOptions(position);
+
+  // remove positions occupied by same color
+  const viableMoves = movementOptions.filter(
+    (p) => board[p] === null || board[p]?.color !== color
+  );
+
+  return viableMoves;
+};
+
 const findRookMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): number[] => {
