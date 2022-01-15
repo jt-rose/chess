@@ -8,7 +8,6 @@ import {
   King,
   Pawn,
 } from "./pieces";
-import { findRightMoves } from "./path";
 
 // build out starting board of 64 spots with no pieces set
 export type Board = (ChessPieces | null)[];
@@ -107,12 +106,7 @@ const moveQueen = (position: number, color: PlayerColor) => {
 
   // declare variables to store possible moves
   let topMoves: number[] = [];
-  const rightMoves = findRightMoves({
-    board,
-    currentPosition: position,
-    color,
-    rightMoveLimit,
-  });
+  let rightMoves: number[] = [];
   let bottommMoves: number[] = [];
   let leftMoves: number[] = [];
 
