@@ -1,4 +1,4 @@
-import { PlayerColor } from "./pieces";
+import { ChessPiece, PlayerColor } from "./pieces";
 import { Board, setBoard } from "./index";
 
 const board = setBoard();
@@ -406,19 +406,102 @@ interface ChessPieceSettings {
 
 // };
 
-// const findBishopMovementOptions = (
-//   chessPieceSettings: ChessPieceSettings
-// ): number[] => {
-//   const { position, color, board } = chessPieceSettings;
+const findBishopMovementOptions = (
+  chessPieceSettings: ChessPieceSettings
+): ReturnType<typeof getDiagonals> => {
+  const { position, color, board } = chessPieceSettings;
 
-//   // get movement options
-//   const {
-//     topLeftDiagonals,
-//     topRightDiagonals,
-//     bottomLeftDiagonals,
-//     bottomRightDiagonals,
-//   } = getDiagonals(position);
-// };
+  // get movement options
+  let {
+    topLeftDiagonals,
+    topRightDiagonals,
+    bottomLeftDiagonals,
+    bottomRightDiagonals,
+  } = getDiagonals(position);
+
+  // find first position in each diagonal
+  // that has another piece, or return undefined
+  // diagonals are returned in the order they branch out
+  // from the original piece's position, so the first one found
+  // will be the first in the path
+  const topLeftPieceIndex = topLeftDiagonals.find((p) => board[p] !== null);
+  const topRightPieceIndex = topRightDiagonals.find((p) => board[p] !== null);
+  const bottomLeftPieceIndex = bottomLeftDiagonals.find(
+    (p) => board[p] !== null
+  );
+  const bottomRightPieceIndex = bottomRightDiagonals.find(
+    (p) => board[p] !== null
+  );
+
+  // if piece found, determine if it has the same color
+  // if same color, remove that piece's position and all after
+  // if opposite color, keep that position but remove all after
+
+  // calculate viable topLeft movement options
+  if (topLeftPieceIndex) {
+    if (board[topLeftPieceIndex]?.color !== color) {
+      // remove positions less than index found
+      topLeftDiagonals = topLeftDiagonals.filter((x) => x >= topLeftPieceIndex);
+    } else {
+      // remove positions at and less than index found
+      topLeftDiagonals = topLeftDiagonals.filter((x) => x > topLeftPieceIndex);
+    }
+  }
+
+  // calculate viable topRight movement options
+  if (topRightPieceIndex) {
+    if (board[topRightPieceIndex]?.color !== color) {
+      // remove positions less than index found
+      topRightDiagonals = topRightDiagonals.filter(
+        (x) => x >= topRightPieceIndex
+      );
+    } else {
+      // remove positions at and less than index found
+      topRightDiagonals = topRightDiagonals.filter(
+        (x) => x > topRightPieceIndex
+      );
+    }
+  }
+
+  // calculate viable bottomLeft movement options
+  if (bottomLeftPieceIndex) {
+    if (board[bottomLeftPieceIndex]?.color !== color) {
+      // remove positions less than index found
+      bottomLeftDiagonals = bottomLeftDiagonals.filter(
+        (x) => x <= bottomLeftPieceIndex
+      );
+    } else {
+      // remove positions at and less than index found
+      bottomLeftDiagonals = bottomLeftDiagonals.filter(
+        (x) => x < bottomLeftPieceIndex
+      );
+    }
+  }
+
+  console.log("bottom right arr: ", bottomRightDiagonals);
+  console.log("bottom right index found", bottomRightPieceIndex);
+  // calculate viable bottomRight movement options
+  if (bottomRightPieceIndex) {
+    if (board[bottomRightPieceIndex]?.color !== color) {
+      // remove positions greater than index found
+      bottomRightDiagonals = bottomRightDiagonals.filter(
+        (x) => x <= bottomRightPieceIndex
+      );
+    } else {
+      // remove positions at and less than than index found
+      bottomRightDiagonals = bottomRightDiagonals.filter(
+        (x) => x < bottomRightPieceIndex
+      );
+    }
+  }
+
+  return {
+    topLeftDiagonals,
+    topRightDiagonals,
+    bottomLeftDiagonals,
+    bottomRightDiagonals,
+  };
+};
 
 const findKnightMovementOptions = (
   chessPieceSettings: ChessPieceSettings
