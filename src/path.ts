@@ -420,11 +420,36 @@ interface ChessPieceSettings {
   board: Board;
 }
 
-// const findKingMovementOptions = (
-//   chessPieceSettings: ChessPieceSettings
-// ): number[] => {
+const findKingMovementOptions = (
+  chessPieceSettings: ChessPieceSettings
+): MovementOptions => {
+  const { position, color, board } = chessPieceSettings;
 
-// };
+  // get possible movements
+  const top = position - 8;
+  const right = position + 1;
+  const bottom = position + 8;
+  const left = position - 1;
+
+  // check if movements are out of bounds or occupied by piece of the same color
+  const invalidTopMovement = top < 0 || board[top]?.color === color;
+
+  const invalidRightMovement =
+    right > getRightBoundary(position) || board[right]?.color === color;
+
+  const invalidBottomMovement = bottom > 63 || board[bottom]?.color === color;
+
+  const invalidLeftMovement =
+    left < getLeftBoundary(position) || board[left]?.color === color;
+
+  // return valid moves
+  return {
+    top: !invalidTopMovement ? [top] : undefined,
+    right: !invalidRightMovement ? [right] : undefined,
+    bottom: !invalidBottomMovement ? [bottom] : undefined,
+    left: !invalidLeftMovement ? [left] : undefined,
+  };
+};
 
 const findBishopMovementOptions = (
   chessPieceSettings: ChessPieceSettings
@@ -498,8 +523,6 @@ const findBishopMovementOptions = (
     }
   }
 
-  console.log("bottom right arr: ", bottomRightDiagonals);
-  console.log("bottom right index found", bottomRightPieceIndex);
   // calculate viable bottomRight movement options
   if (bottomRightPieceIndex) {
     if (board[bottomRightPieceIndex]?.color !== color) {
@@ -582,7 +605,7 @@ const findRookMovementOptions = (
   };
 };
 
-// const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
+// const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): MovementOptions => {}
 
 const findQueenMovementOptions = (
   chessPieceSettings: ChessPieceSettings
