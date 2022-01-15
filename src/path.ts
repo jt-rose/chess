@@ -605,8 +605,6 @@ const findRookMovementOptions = (
   };
 };
 
-// const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): MovementOptions => {}
-
 const findQueenMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
@@ -619,4 +617,81 @@ const findQueenMovementOptions = (
     ...axisMoves,
     ...diagonalMoves,
   };
+};
+
+const findPawnMovementOptions = (
+  chessPieceSettings: ChessPieceSettings
+): MovementOptions => {
+  const { position, color, board } = chessPieceSettings;
+
+  // calculate next possible movements
+  const blackStartingLine = [8, 9, 10, 11, 12, 13, 14, 15];
+  const whiteStartingLine = [48, 49, 50, 51, 52, 53, 54, 55];
+
+  if (color === "black") {
+    const bottom = position + 8;
+    // the bottomDoubleStep refers to the first move where the pawn can move two spaces
+    const bottomDoubleStep = position + 16;
+    const bottomRight = position + 9;
+    const bottomLeft = position + 7;
+
+    // if on starting position, black can move two spaces forward
+    const validBottomMovement = bottom < 63 && board[bottom] === null;
+    const validBottomDoubleStep =
+      validBottomMovement &&
+      blackStartingLine.includes(position) &&
+      bottomDoubleStep < 63 &&
+      board[bottomDoubleStep] === null;
+    const validBottomRightMovement =
+      bottomRight <= getRightBoundary(bottom) &&
+      board[bottomRight]?.color === "white";
+    const validBottomLeftMovement =
+      bottomLeft >= getLeftBoundary(bottom) &&
+      board[bottomRight]?.color === "white";
+
+    let bottomMovements: number[] = [];
+    if (validBottomMovement) {
+      bottomMovements.push(bottom);
+      if (validBottomDoubleStep) {
+        bottomMovements.push(bottomDoubleStep);
+      }
+    }
+
+    return {
+      bottom: bottomMovements.length ? bottomMovements : undefined,
+      bottomRight: validBottomRightMovement ? [bottomRight] : undefined,
+      bottomLeft: validBottomLeftMovement ? [bottomLeft] : undefined,
+    };
+  } else {
+    const top = position - 8;
+    // the bottomDoubleStep refers to the first move where the pawn can move two spaces
+    const topDoubleStep = position - 16;
+    const topRight = position - 7;
+    const topLeft = position - 9;
+
+    // if on starting position, black can move two spaces forward
+    const validTopMovement = top >= 0 && board[top] === null;
+    const validTopDoubleStep =
+      validTopMovement &&
+      whiteStartingLine.includes(position) &&
+      topDoubleStep >= 0 &&
+      board[topDoubleStep] === null;
+    const validTopRightMovement =
+      topRight <= getRightBoundary(top) && board[topRight]?.color === "black";
+    const validTopLeftMovement =
+      topLeft >= getLeftBoundary(top) && board[topLeft]?.color === "black";
+
+    let topMovements: number[] = [];
+    if (validTopMovement) {
+      topMovements.push(top);
+      if (validTopDoubleStep) {
+        topMovements.push(topDoubleStep);
+      }
+    }
+    return {
+      top: topMovements.length ? topMovements : undefined,
+      topRight: validTopRightMovement ? [topRight] : undefined,
+      topLeft: validTopLeftMovement ? [topLeft] : undefined,
+    };
+  }
 };
