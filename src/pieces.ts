@@ -1,9 +1,18 @@
 export type PlayerColor = "white" | "black";
+export type NameOfChessPiece =
+  | "king"
+  | "queen"
+  | "bishop"
+  | "knight"
+  | "rook"
+  | "pawn"
+  | "_PLACEHOLDER_";
 
 // set up a generic chess piece class
 // the movementOptions and move functions will be overwritten with the unique move instructions
 // for each type of chess piece
 export class ChessPiece {
+  name: NameOfChessPiece;
   color: PlayerColor;
   movementOptions(): number[] {
     return [];
@@ -19,40 +28,47 @@ export class ChessPiece {
 
   constructor(color: PlayerColor) {
     this.color = color;
+    this.name = "_PLACEHOLDER_";
   }
 }
 
 export class King extends ChessPiece {
   constructor(color: PlayerColor) {
     super(color);
+    this.name = "king";
   }
 }
 
 export class Queen extends ChessPiece {
   constructor(color: PlayerColor) {
     super(color);
+    this.name = "queen";
   }
 }
 export class Bishop extends ChessPiece {
   constructor(color: PlayerColor) {
     super(color);
+    this.name = "bishop";
   }
 }
 export class Knight extends ChessPiece {
   constructor(color: PlayerColor) {
     super(color);
+    this.name = "knight";
   }
 }
 
 export class Rook extends ChessPiece {
   constructor(color: PlayerColor) {
     super(color);
+    this.name = "rook";
   }
 }
 
 export class Pawn extends ChessPiece {
   constructor(color: PlayerColor) {
     super(color);
+    this.name = "pawn";
   }
 }
 
