@@ -4,6 +4,21 @@ import { Board, setBoard } from "./index";
 const board = setBoard();
 
 /* -------------------------------------------------------------------------- */
+/*                         movement options interface                         */
+/* -------------------------------------------------------------------------- */
+
+interface MovementOptions {
+  top?: number[];
+  topRight?: number[];
+  right?: number[];
+  bottomRight?: number[];
+  bottom?: number[];
+  bottomLeft?: number[];
+  left?: number[];
+  topLeft?: number[];
+}
+
+/* -------------------------------------------------------------------------- */
 /*                             map out board edges                            */
 /* -------------------------------------------------------------------------- */
 /*
@@ -332,14 +347,19 @@ const getKnightLeftMovementOptions = (position: number) => {
 };
 
 // get all possible knight movement options
-const getKnightMovementOptions = (position: number) => {
+const getKnightMovementOptions = (position: number): MovementOptions => {
   // get movement options
-  const topMoves = getKnightTopMovementOptions(position);
-  const rightMoves = getKnightRightMovementOptions(position);
-  const bottomMoves = getKnightBottomMovementOptions(position);
-  const leftMoves = getKnightLeftMovementOptions(position);
+  const top = getKnightTopMovementOptions(position);
+  const right = getKnightRightMovementOptions(position);
+  const bottom = getKnightBottomMovementOptions(position);
+  const left = getKnightLeftMovementOptions(position);
 
-  return [...topMoves, ...rightMoves, ...bottomMoves, ...leftMoves];
+  return {
+    top,
+    right,
+    bottom,
+    left,
+  };
 };
 
 /* -------------------------------------------------------------------------- */
@@ -408,7 +428,7 @@ interface ChessPieceSettings {
 
 const findBishopMovementOptions = (
   chessPieceSettings: ChessPieceSettings
-): ReturnType<typeof getDiagonals> => {
+): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
 
   // get movement options
@@ -496,32 +516,52 @@ const findBishopMovementOptions = (
   }
 
   return {
-    topLeftDiagonals,
-    topRightDiagonals,
-    bottomLeftDiagonals,
-    bottomRightDiagonals,
+    topLeft: topLeftDiagonals,
+    topRight: topRightDiagonals,
+    bottomLeft: bottomLeftDiagonals,
+    bottomRight: bottomRightDiagonals,
   };
+};
+
+const removePositionsHeldBySameColor = (config: {
+  positions?: number[];
+  color: PlayerColor;
+  board: Board;
+}) => {
+  const { positions, color, board } = config;
+  if (!positions) {
+    return undefined;
+  }
+  return positions.filter(
+    (p) => board[p] === null || board[p]?.color !== color
+  );
 };
 
 const findKnightMovementOptions = (
   chessPieceSettings: ChessPieceSettings
-): number[] => {
+): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
 
   // get movement options
-  const movementOptions = getKnightMovementOptions(position);
+  let { top, right, bottom, left } = getKnightMovementOptions(position);
 
   // remove positions occupied by same color
-  const viableMoves = movementOptions.filter(
-    (p) => board[p] === null || board[p]?.color !== color
-  );
+  top = removePositionsHeldBySameColor({ positions: top, color, board });
+  right = removePositionsHeldBySameColor({ positions: right, color, board });
+  bottom = removePositionsHeldBySameColor({ positions: bottom, color, board });
+  left = removePositionsHeldBySameColor({ positions: left, color, board });
 
-  return viableMoves;
+  return {
+    top,
+    right,
+    bottom,
+    left,
+  };
 };
 
 const findRookMovementOptions = (
   chessPieceSettings: ChessPieceSettings
-): number[] => {
+): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
   // get row and column movement options
   let { leftRow, rightRow } = getLeftAndRightSidesOfRow(position);
@@ -534,22 +574,29 @@ const findRookMovementOptions = (
   topColumn = findAvailableTopPositions(topColumn, color, board);
 
   // return all viable movement options
-  return [...leftRow, ...rightRow, ...bottomColumn, ...topColumn];
+  return {
+    top: topColumn,
+    right: rightRow,
+    bottom: bottomColumn,
+    left: leftRow,
+  };
 };
 
 // const findPawnMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {}
 
-// const findQueenMovementOptions = (chessPieceSettings: ChessPieceSettings): number[] => {
-//     // the queen's movement options are a combination of the rook and the bishop
-//     // so to simplify things we can just call those functions
-//         const axisMovementOptions = findRookMovementOptions(chessPieceSettings)
-//         const diagonalMovementOptions = findBishopMovementOptions(chessPieceSettings)
+const findQueenMovementOptions = (
+  chessPieceSettings: ChessPieceSettings
+): MovementOptions => {
+  // the queen's movement options are a combination of the rook and the bishop
+  // so to simplify things we can just call those functions
+  const axisMoves = findRookMovementOptions(chessPieceSettings);
+  const diagonalMoves = findBishopMovementOptions(chessPieceSettings);
 
-//         return [
-//             ...axisMovementOptions,
-//             ...diagonalMovementOptions
-//         ]
-//     }
+  return {
+    ...axisMoves,
+    ...diagonalMoves,
+  };
+};
 
 /* -------------------------------------------------------------------------- */
 /*                     find new positions to right of unit                    */
