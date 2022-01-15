@@ -113,3 +113,39 @@ const moveQueen = (position: number, color: PlayerColor) => {
   // starting from current position, check each directional step
   // toward the movement limits and store all possible moves in that direction
 };
+
+const updateBoard = (
+  oldPosition: number,
+  newPosition: number,
+  board: Board
+) => {
+  // store the piece that's moving
+  const piece = board[oldPosition];
+
+  // clear out the old position of the piece on the board
+  board[oldPosition] = null;
+
+  // move the piece to the new position and remove any position that had been there
+  board[newPosition] = piece;
+
+  // transform pawn into queen if reaching other side of the board
+  if (
+    piece?.color === "black" &&
+    piece.name === "pawn" &&
+    [56, 57, 58, 59, 60, 61, 62, 63].includes(newPosition)
+  ) {
+    const newQueen = new Queen("black");
+    board[newPosition] = newQueen;
+  }
+  if (
+    piece?.color === "white" &&
+    piece.name === "pawn" &&
+    [0, 1, 2, 3, 4, 5, 6, 7].includes(newPosition)
+  ) {
+    const newQueen = new Queen("white");
+    board[newPosition] = newQueen;
+  }
+
+  // return updated board
+  return board;
+};
