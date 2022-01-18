@@ -1,7 +1,7 @@
-import { ChessPiece, PlayerColor } from "./pieces";
-import { Board, setBoard } from "./index";
+import { PlayerColor } from "./pieces";
+import { Board, createNewBoard } from "./board";
 
-const board = setBoard();
+const board = createNewBoard();
 
 /* -------------------------------------------------------------------------- */
 /*                         movement options interface                         */

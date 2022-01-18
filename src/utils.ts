@@ -1,4 +1,5 @@
-import { Board, ChessPieceWithIndex, updateBoard } from ".";
+import { ChessPieceWithIndex, updateBoard } from ".";
+import { Board } from "./board";
 import { MovementOptions } from "./path";
 import { PlayerColor } from "./pieces";
 
