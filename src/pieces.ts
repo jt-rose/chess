@@ -28,14 +28,14 @@ export class ChessPiece {
   getMovementOptions(chessPieceSettings: ChessPieceSettings): MovementOptions {
     return {};
   }
-  move(position: number): boolean {
+  /*move(position: number): boolean {
     // const availableSpots = this.movementOptions()
     // if (availableSpots.includes(position)) {
     // }
     // return [];
     console.log(position);
     return false;
-  }
+  }*/
 
   constructor(color: PlayerColor) {
     this.color = color;
