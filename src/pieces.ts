@@ -1,3 +1,14 @@
+import {
+  findPawnMovementOptions,
+  findKingMovementOptions,
+  findQueenMovementOptions,
+  findRookMovementOptions,
+  findBishopMovementOptions,
+  findKnightMovementOptions,
+  MovementOptions,
+  ChessPieceSettings,
+} from "./path";
+
 export type PlayerColor = "white" | "black";
 export type NameOfChessPiece =
   | "king"
@@ -14,8 +25,8 @@ export type NameOfChessPiece =
 export class ChessPiece {
   name: NameOfChessPiece;
   color: PlayerColor;
-  movementOptions(): number[] {
-    return [];
+  getMovementOptions(chessPieceSettings: ChessPieceSettings): MovementOptions {
+    return {};
   }
   move(position: number): boolean {
     // const availableSpots = this.movementOptions()
@@ -33,6 +44,7 @@ export class ChessPiece {
 }
 
 export class King extends ChessPiece {
+  getMovementOptions = findKingMovementOptions;
   constructor(color: PlayerColor) {
     super(color);
     this.name = "king";
@@ -40,18 +52,21 @@ export class King extends ChessPiece {
 }
 
 export class Queen extends ChessPiece {
+  getMovementOptions = findQueenMovementOptions;
   constructor(color: PlayerColor) {
     super(color);
     this.name = "queen";
   }
 }
 export class Bishop extends ChessPiece {
+  getMovementOptions = findBishopMovementOptions;
   constructor(color: PlayerColor) {
     super(color);
     this.name = "bishop";
   }
 }
 export class Knight extends ChessPiece {
+  getMovementOptions = findKnightMovementOptions;
   constructor(color: PlayerColor) {
     super(color);
     this.name = "knight";
@@ -59,6 +74,7 @@ export class Knight extends ChessPiece {
 }
 
 export class Rook extends ChessPiece {
+  getMovementOptions = findRookMovementOptions;
   constructor(color: PlayerColor) {
     super(color);
     this.name = "rook";
@@ -66,6 +82,7 @@ export class Rook extends ChessPiece {
 }
 
 export class Pawn extends ChessPiece {
+  getMovementOptions = findPawnMovementOptions;
   constructor(color: PlayerColor) {
     super(color);
     this.name = "pawn";

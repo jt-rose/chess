@@ -7,7 +7,7 @@ const board = setBoard();
 /*                         movement options interface                         */
 /* -------------------------------------------------------------------------- */
 
-interface MovementOptions {
+export interface MovementOptions {
   top?: number[];
   topRight?: number[];
   right?: number[];
@@ -414,13 +414,13 @@ const findAvailableTopPositions = findAvailableLeftPositions;
 
 // These functions will find the movement options for each piece,
 // factoring in the curent board and the movement ability of each piece
-interface ChessPieceSettings {
+export interface ChessPieceSettings {
   position: number;
   color: PlayerColor;
   board: Board;
 }
 
-const findKingMovementOptions = (
+export const findKingMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
@@ -451,7 +451,7 @@ const findKingMovementOptions = (
   };
 };
 
-const findBishopMovementOptions = (
+export const findBishopMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
@@ -560,7 +560,7 @@ const removePositionsHeldBySameColor = (config: {
   );
 };
 
-const findKnightMovementOptions = (
+export const findKnightMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
@@ -582,7 +582,7 @@ const findKnightMovementOptions = (
   };
 };
 
-const findRookMovementOptions = (
+export const findRookMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
@@ -605,7 +605,7 @@ const findRookMovementOptions = (
   };
 };
 
-const findQueenMovementOptions = (
+export const findQueenMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
   // the queen's movement options are a combination of the rook and the bishop
@@ -619,7 +619,7 @@ const findQueenMovementOptions = (
   };
 };
 
-const findPawnMovementOptions = (
+export const findPawnMovementOptions = (
   chessPieceSettings: ChessPieceSettings
 ): MovementOptions => {
   const { position, color, board } = chessPieceSettings;
