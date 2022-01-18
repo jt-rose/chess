@@ -1,7 +1,10 @@
-import { ChessPieceWithIndex } from ".";
 import { Board, updateBoard } from "./board";
 import { MovementOptions } from "./path";
-import { PlayerColor } from "./pieces";
+import { ChessPiece, PlayerColor } from "./pieces";
+
+export interface ChessPieceWithIndex extends ChessPiece {
+  index: number;
+}
 
 export const getPiecesOfSameColor = (
   color: PlayerColor,
