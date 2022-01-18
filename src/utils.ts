@@ -110,3 +110,6 @@ export const findDefendingKingPosition = (config: {
     (piece) => piece?.name === "king" && piece.color !== config.offensiveColor
   );
 };
+
+export const findKingPosition = (color: PlayerColor, board: Board) =>
+  board.findIndex((piece) => piece?.name === "king" && piece.color === color);
