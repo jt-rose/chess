@@ -10,6 +10,7 @@ import {
   Pawn,
   ChessPiece,
 } from "./pieces";
+import { getPiecesOfSameColor } from "./utils";
 
 // build out starting board of 64 spots with no pieces set
 export type Board = (ChessPieces | null)[];
@@ -152,7 +153,7 @@ const updateBoard = (
   return board;
 };
 
-interface ChessPieceWithIndex extends ChessPiece {
+export interface ChessPieceWithIndex extends ChessPiece {
   index: number;
 }
 
@@ -188,13 +189,7 @@ const convertMovementOptionsToArray = (mo: MovementOptions): number[] => {
 // get the current offensive range for one side
 const getOffensiveRange = (offensiveColor: PlayerColor, board: Board) => {
   // pick out pieces from board that are on the same offensive side
-  let offensivePieces: ChessPieceWithIndex[] = [];
-  for (let index = 0; index < board.length; index++) {
-    const piece = board[index];
-    if (piece && piece.color === offensiveColor) {
-      offensivePieces.push({ ...piece, index });
-    }
-  }
+  let offensivePieces = getPiecesOfSameColor(offensiveColor, board);
 
   // get movement options for all offensive pieces
   const offensiveMovementOptions = offensivePieces
@@ -225,3 +220,8 @@ const putKingInCheck = (offensiveColor: PlayerColor, board: Board): boolean => {
 // or even just move in the way
 const checkMate = () => {};
 // enpassant
+
+// map out possible board updates after all possible moves
+const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
+  convertMovementOptionsToArray;
+};
