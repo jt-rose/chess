@@ -19,5 +19,14 @@ const putKingInCheck = (offensiveColor: PlayerColor, board: Board): boolean => {
 
 // offensive options can change if king or other pieces defeat attacking pieces
 // or even just move in the way
-const checkMate = () => {};
+const checkMate = () => {
+  // find movement positions of offensiveColor
+  // find defending king's position
+  // check if king's position can be reached by the offensive color's movement options
+  // if reachable, find all possible movement options for the king's color
+  // then model how the board will change for every scenario
+  // and then rerun the check for each to see if the king is still in check
+  // if he is, checkmate!
+  // if not, then it is only check and he may still escape
+};
 // enpassant
