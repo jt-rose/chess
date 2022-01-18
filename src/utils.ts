@@ -71,9 +71,26 @@ export const getOffensiveRange = (
   return offensiveMovementOptions;
 };
 
-interface ChessPieceWithCalculatedMovementOptions extends ChessPieceWithIndex {
-  movementOptions: MovementOptions;
+interface ChessPieceWithMovementOptions extends ChessPieceWithIndex {
+  movementOptions: number[];
 }
+
+export const mapSinglePiecePossibleMoves = (
+  position: number,
+  board: Board
+): ChessPieceWithMovementOptions | null => {
+  const piece = board[position];
+  if (piece === null) {
+    return null;
+  }
+  const mo = piece.getMovementOptions({ position, color: piece.color, board });
+  const movementOptions = convertMovementOptionsToArray(mo);
+  return {
+    ...piece,
+    index: position,
+    movementOptions,
+  };
+};
 
 // map out possible board updates after all possible moves
 export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
@@ -81,12 +98,15 @@ export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
   const pieces = getPiecesOfSameColor(offensiveColor, board);
 
   // map out possible movement options by piece
-  const movementOptionsByPiece = pieces.map((p) => ({
-    ...p,
-    movementOptions: convertMovementOptionsToArray(
-      p.getMovementOptions({ position: p.index, color: p.color, board })
-    ),
-  }));
+  let movementOptionsByPiece: ChessPieceWithMovementOptions[] = [];
+  for (const piece of pieces) {
+    if (piece !== null) {
+      const movementOptions = mapSinglePiecePossibleMoves(piece.index, board);
+      if (movementOptions !== null) {
+        movementOptionsByPiece.push(movementOptions);
+      }
+    }
+  }
 
   // for each possible movement position of each piece, map out the board updates that would ensue
   const possibleBoardUpdates = movementOptionsByPiece
