@@ -12,15 +12,6 @@ import {
 } from "./pieces";
 import { getOffensiveRange } from "./utils";
 
-const hasSameRow = (originalPosition: number, newPosition: number) => {
-  if (newPosition < 0 || newPosition > 63) {
-    return false;
-  }
-  const leftBoundary = originalPosition - (originalPosition % 8);
-  const newPositionLeftBoundary = newPosition - (newPosition % 8);
-  return leftBoundary === newPositionLeftBoundary;
-};
-
 export interface ChessPieceWithIndex extends ChessPiece {
   index: number;
 }
