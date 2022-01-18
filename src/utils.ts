@@ -101,15 +101,9 @@ export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
   return possibleBoardUpdates;
 };
 
-// find defending king's position
-export const findDefendingKingPosition = (config: {
-  offensiveColor: PlayerColor;
-  board: Board;
-}) => {
-  return config.board.findIndex(
-    (piece) => piece?.name === "king" && piece.color !== config.offensiveColor
-  );
-};
-
+// find king's position
 export const findKingPosition = (color: PlayerColor, board: Board) =>
   board.findIndex((piece) => piece?.name === "king" && piece.color === color);
+
+export const getOppositeColor = (color: PlayerColor): PlayerColor =>
+  color === "black" ? "white" : "black";
