@@ -95,3 +95,13 @@ export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
   // return possible board outcomes
   return possibleBoardUpdates;
 };
+
+// find defending king's position
+export const findDefendingKingPosition = (config: {
+  offensiveColor: PlayerColor;
+  board: Board;
+}) => {
+  return config.board.findIndex(
+    (piece) => piece?.name === "king" && piece.color !== config.offensiveColor
+  );
+};
