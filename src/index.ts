@@ -10,7 +10,7 @@ import {
   Pawn,
   ChessPiece,
 } from "./pieces";
-import { getPiecesOfSameColor } from "./utils";
+import { getOffensiveRange, getPiecesOfSameColor } from "./utils";
 
 // build out starting board of 64 spots with no pieces set
 export type Board = (ChessPieces | null)[];
@@ -71,53 +71,7 @@ const hasSameRow = (originalPosition: number, newPosition: number) => {
   return leftBoundary === newPositionLeftBoundary;
 };
 
-const moveKing = (position: number, color: PlayerColor) => {
-  // define all possible current movement paths
-  const topMove = position - 8;
-  const rightMove = position + 1;
-  const bottomMove = position + 8;
-  const leftMove = position - 1;
-
-  let moves = [];
-  if (topMove > 0) {
-    moves.push(topMove);
-  }
-  if (bottomMove <= 63) {
-    moves.push(bottomMove);
-  }
-
-  if (hasSameRow(position, rightMove)) {
-    moves.push(rightMove);
-  }
-
-  if (hasSameRow(position, leftMove)) {
-    moves.push(leftMove);
-  }
-
-  return moves.filter(
-    (movePosition) =>
-      board[movePosition] === null || board[movePosition]?.color !== color
-  );
-};
-
-const moveQueen = (position: number, color: PlayerColor) => {
-  // define directional limits of movement range
-  const topMoveLimit = 0 + (position % 8);
-  const rightMoveLimit = (position % 8) + 7;
-  const bottomMoveLimit = 54 + (position % 8);
-  const leftMoveLimit = position - (position % 8);
-
-  // declare variables to store possible moves
-  let topMoves: number[] = [];
-  let rightMoves: number[] = [];
-  let bottommMoves: number[] = [];
-  let leftMoves: number[] = [];
-
-  // starting from current position, check each directional step
-  // toward the movement limits and store all possible moves in that direction
-};
-
-const updateBoard = (
+export const updateBoard = (
   oldPosition: number,
   newPosition: number,
   board: Board
@@ -157,50 +111,6 @@ export interface ChessPieceWithIndex extends ChessPiece {
   index: number;
 }
 
-// convert undefined movement options into empty number array
-const convertNumberArray = (nums: number[] | undefined): number[] =>
-  nums ? nums : [];
-
-const convertMovementOptionsToArray = (mo: MovementOptions): number[] => {
-  let { top, topRight, right, bottomRight, bottom, bottomLeft, left, topLeft } =
-    mo;
-
-  // convert undefined values
-  top = convertNumberArray(top);
-  topRight = convertNumberArray(topRight);
-  right = convertNumberArray(right);
-  bottomRight = convertNumberArray(bottomRight);
-  bottom = convertNumberArray(bottom);
-  bottomLeft = convertNumberArray(bottomLeft);
-  left = convertNumberArray(left);
-  topLeft = convertNumberArray(topLeft);
-  return [
-    ...top,
-    ...topRight,
-    ...right,
-    ...bottomRight,
-    ...bottom,
-    ...bottomLeft,
-    ...left,
-    ...topLeft,
-  ];
-};
-
-// get the current offensive range for one side
-const getOffensiveRange = (offensiveColor: PlayerColor, board: Board) => {
-  // pick out pieces from board that are on the same offensive side
-  let offensivePieces = getPiecesOfSameColor(offensiveColor, board);
-
-  // get movement options for all offensive pieces
-  const offensiveMovementOptions = offensivePieces
-    .map((p) =>
-      p.getMovementOptions({ position: p.index, color: p.color, board })
-    )
-    .flatMap((mo) => convertMovementOptionsToArray(mo));
-
-  return offensiveMovementOptions;
-};
-
 // get offensive range and see if opposing king is in danger
 const putKingInCheck = (offensiveColor: PlayerColor, board: Board): boolean => {
   const offensiveMovementOptions = getOffensiveRange(offensiveColor, board);
@@ -220,8 +130,3 @@ const putKingInCheck = (offensiveColor: PlayerColor, board: Board): boolean => {
 // or even just move in the way
 const checkMate = () => {};
 // enpassant
-
-// map out possible board updates after all possible moves
-const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
-  convertMovementOptionsToArray;
-};
