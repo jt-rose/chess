@@ -26,7 +26,9 @@ export const getPiecesOfSameColor = (
 const convertNumberArray = (nums: number[] | undefined): number[] =>
   nums ? nums : [];
 
-const convertMovementOptionsToArray = (mo: MovementOptions): number[] => {
+export const convertMovementOptionsToArray = (
+  mo: MovementOptions
+): number[] => {
   let { top, topRight, right, bottomRight, bottom, bottomLeft, left, topLeft } =
     mo;
 
@@ -69,6 +71,10 @@ export const getOffensiveRange = (
   return offensiveMovementOptions;
 };
 
+interface ChessPieceWithCalculatedMovementOptions extends ChessPieceWithIndex {
+  movementOptions: MovementOptions;
+}
+
 // map out possible board updates after all possible moves
 export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
   // get pieces of same color
@@ -89,7 +95,6 @@ export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
         updateBoard(piece.index, mo, board)
       );
     })
-    .flat()
     .flat();
 
   // return possible board outcomes
