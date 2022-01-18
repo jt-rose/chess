@@ -1,3 +1,4 @@
+import { MovementOptions } from "./path";
 import {
   PlayerColor,
   ChessPieces,
@@ -7,6 +8,7 @@ import {
   Queen,
   King,
   Pawn,
+  ChessPiece,
 } from "./pieces";
 
 // build out starting board of 64 spots with no pieces set
@@ -149,3 +151,77 @@ const updateBoard = (
   // return updated board
   return board;
 };
+
+interface ChessPieceWithIndex extends ChessPiece {
+  index: number;
+}
+
+// convert undefined movement options into empty number array
+const convertNumberArray = (nums: number[] | undefined): number[] =>
+  nums ? nums : [];
+
+const convertMovementOptionsToArray = (mo: MovementOptions): number[] => {
+  let { top, topRight, right, bottomRight, bottom, bottomLeft, left, topLeft } =
+    mo;
+
+  // convert undefined values
+  top = convertNumberArray(top);
+  topRight = convertNumberArray(topRight);
+  right = convertNumberArray(right);
+  bottomRight = convertNumberArray(bottomRight);
+  bottom = convertNumberArray(bottom);
+  bottomLeft = convertNumberArray(bottomLeft);
+  left = convertNumberArray(left);
+  topLeft = convertNumberArray(topLeft);
+  return [
+    ...top,
+    ...topRight,
+    ...right,
+    ...bottomRight,
+    ...bottom,
+    ...bottomLeft,
+    ...left,
+    ...topLeft,
+  ];
+};
+
+// get the current offensive range for one side
+const getOffensiveRange = (offensiveColor: PlayerColor, board: Board) => {
+  // pick out pieces from board that are on the same offensive side
+  let offensivePieces: ChessPieceWithIndex[] = [];
+  for (let index = 0; index < board.length; index++) {
+    const piece = board[index];
+    if (piece && piece.color === offensiveColor) {
+      offensivePieces.push({ ...piece, index });
+    }
+  }
+
+  // get movement options for all offensive pieces
+  const offensiveMovementOptions = offensivePieces
+    .map((p) =>
+      p.getMovementOptions({ position: p.index, color: p.color, board })
+    )
+    .flatMap((mo) => convertMovementOptionsToArray(mo));
+
+  return offensiveMovementOptions;
+};
+
+// get offensive range and see if opposing king is in danger
+const putKingInCheck = (offensiveColor: PlayerColor, board: Board): boolean => {
+  const offensiveMovementOptions = getOffensiveRange(offensiveColor, board);
+
+  // pick out position of defending king
+  const kingPosition = board.findIndex(
+    (p) => p?.name === "king" && p.color !== offensiveColor
+  );
+
+  // check if king is within range of attack
+  const isKingInDanger = offensiveMovementOptions.includes(kingPosition);
+
+  return isKingInDanger;
+};
+
+// offensive options can change if king or other pieces defeat attacking pieces
+// or even just move in the way
+const checkMate = () => {};
+// enpassant
