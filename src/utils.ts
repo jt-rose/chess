@@ -78,10 +78,10 @@ interface ChessPieceWithMovementOptions extends ChessPieceWithIndex {
 export const mapSinglePiecePossibleMoves = (
   position: number,
   board: Board
-): ChessPieceWithMovementOptions | null => {
+): ChessPieceWithMovementOptions => {
   const piece = board[position];
   if (piece === null) {
-    return null;
+    throw Error("King could not be found in active game");
   }
   const mo = piece.getMovementOptions({ position, color: piece.color, board });
   const movementOptions = convertMovementOptionsToArray(mo);
@@ -102,9 +102,7 @@ export const mapPossibleMoves = (offensiveColor: PlayerColor, board: Board) => {
   for (const piece of pieces) {
     if (piece !== null) {
       const movementOptions = mapSinglePiecePossibleMoves(piece.index, board);
-      if (movementOptions !== null) {
-        movementOptionsByPiece.push(movementOptions);
-      }
+      movementOptionsByPiece.push(movementOptions);
     }
   }
 
