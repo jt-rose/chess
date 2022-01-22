@@ -6,17 +6,15 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    //"noEmit": true,
+    "noEmit": true,
+    "incremental": true,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    //"isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "outDir": "./build" /* Redirect output structure to the directory. */,
-    "rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["./src/"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
